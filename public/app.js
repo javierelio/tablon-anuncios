@@ -1897,6 +1897,17 @@ async function handleClick(control) {
     return;
   }
 
+  if (action === 'admin-delete-campaign') {
+    const campaignId = Number(control.dataset.id);
+    const name = control.dataset.name;
+    if (!confirm(`¿Eliminar la campaña "${name}"?\n\nEsto borrará también todos sus tablones, anuncios y personajes. Esta acción no se puede deshacer.`)) return;
+    await api(`/api/campaigns/${campaignId}`, { method: 'DELETE' });
+    await loadAdminCampaigns();
+    render();
+    setToast('Campaña eliminada.');
+    return;
+  }
+
   if (action === 'remove-campaign-dm') {
     const campaignId = Number(control.dataset.campaignId);
     const userId = Number(control.dataset.userId);
@@ -2635,6 +2646,7 @@ function renderAdminCampaignsView() {
           <div class="actions" style="margin-top:.6rem">
             <button class="metal-button" type="button" data-action="manage-campaign-dms" data-id="${c.id}">Gestionar maestros</button>
             <button class="ghost-button" type="button" data-action="admin-open-campaign" data-id="${c.id}">Ir al tablón →</button>
+            <button class="ghost-button danger" type="button" data-action="admin-delete-campaign" data-id="${c.id}" data-name="${escapeHtml(c.name)}" title="Eliminar campaña">🗑 Eliminar</button>
           </div>
         </article>
       `).join('') || `<div class="empty-state" style="min-height:100px"><p>No hay campañas todavía.</p></div>`}
