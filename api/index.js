@@ -943,9 +943,46 @@ async function revertPull(id, user) {
   return announcementDto(row, user, true);
 }
 
+// ─── ARCHIVOS ESTÁTICOS ───────────────────────────────────────────────────────
+const fs = require('fs');
+const path = require('path');
+const PUBLIC_DIR = path.join(__dirname, '..', 'public');
+const MIME = {
+  '.html': 'text/html; charset=utf-8',
+  '.css': 'text/css',
+  '.js': 'application/javascript',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.ico': 'image/x-icon',
+  '.svg': 'image/svg+xml',
+  '.woff': 'font/woff',
+  '.woff2': 'font/woff2',
+  '.ttf': 'font/ttf',
+  '.json': 'application/json',
+};
+
 // ─── ROUTER ───────────────────────────────────────────────────────────────────
 async function handleApi(req, res, url) {
   const { pathname } = url;
+
+  // ── Archivos estáticos del frontend ─────────────────────────────────────────
+  if (!pathname.startsWith('/api')) {
+    const filePath = path.join(PUBLIC_DIR, pathname === '/' ? 'index.html' : pathname);
+    try {
+      const stat = fs.statSync(filePath);
+      if (stat.isFile()) {
+        const ext = path.extname(filePath).toLowerCase();
+        res.setHeader('Content-Type', MIME[ext] || 'application/octet-stream');
+        res.end(fs.readFileSync(filePath));
+        return;
+      }
+    } catch (_) { /* no encontrado, SPA fallback */ }
+    // SPA fallback → index.html
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.end(fs.readFileSync(path.join(PUBLIC_DIR, 'index.html')));
+    return;
+  }
 
   // ── Rutas públicas ──────────────────────────────────────────────────────────
   if (req.method === 'POST' && pathname === '/api/login') {
