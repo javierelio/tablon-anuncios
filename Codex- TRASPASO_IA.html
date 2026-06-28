@@ -1,0 +1,762 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Traspaso IA - Tablon de Anuncios Westmarch</title>
+    <style>
+      :root {
+        --bg: #17120f;
+        --panel: #241b16;
+        --panel-2: #30241c;
+        --ink: #f1dfbd;
+        --muted: #baa98f;
+        --gold: #c09a4b;
+        --red: #7b2b26;
+        --line: rgba(192, 154, 75, .28);
+        --paper: #ead6a8;
+        --paper-ink: #24140f;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        font-family: Georgia, "Times New Roman", serif;
+        line-height: 1.62;
+        background:
+          radial-gradient(circle at 20% 0%, rgba(123, 43, 38, .24), transparent 34rem),
+          radial-gradient(circle at 80% 10%, rgba(192, 154, 75, .14), transparent 28rem),
+          linear-gradient(135deg, #100c0a, var(--bg) 42%, #090807);
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background:
+          linear-gradient(rgba(255, 255, 255, .025) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, .018) 1px, transparent 1px);
+        background-size: 8px 8px, 13px 13px;
+        opacity: .34;
+      }
+
+      header.hero {
+        position: relative;
+        padding: 4rem min(6vw, 5rem) 3rem;
+        border-bottom: 1px solid var(--line);
+        background:
+          linear-gradient(90deg, rgba(0,0,0,.42), rgba(0,0,0,.12)),
+          repeating-linear-gradient(90deg, #21120d 0 86px, #321d13 86px 94px, #4f2d1b 94px 176px);
+        box-shadow: inset 0 -40px 80px rgba(0,0,0,.28);
+      }
+
+      main {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+        gap: 2rem;
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 2rem min(4vw, 3rem) 4rem;
+      }
+
+      nav {
+        position: sticky;
+        top: 1rem;
+        align-self: start;
+        display: grid;
+        gap: .45rem;
+        padding: 1rem;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(20, 14, 12, .82);
+      }
+
+      nav a {
+        color: var(--muted);
+        text-decoration: none;
+        padding: .4rem .5rem;
+        border-radius: 5px;
+      }
+
+      nav a:hover {
+        color: var(--ink);
+        background: rgba(192, 154, 75, .12);
+      }
+
+      article {
+        display: grid;
+        gap: 1rem;
+      }
+
+      section {
+        padding: 1.2rem;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background:
+          linear-gradient(180deg, rgba(48, 36, 28, .9), rgba(28, 20, 16, .94));
+        box-shadow: 0 18px 44px rgba(0,0,0,.24);
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0 0 .55rem;
+        line-height: 1.16;
+        color: #f4dfad;
+      }
+
+      h1 {
+        max-width: 980px;
+        font-size: clamp(2.2rem, 5vw, 4.4rem);
+      }
+
+      h2 {
+        font-size: 1.55rem;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: .45rem;
+      }
+
+      h3 {
+        margin-top: .8rem;
+        font-size: 1.12rem;
+      }
+
+      p {
+        margin: .45rem 0;
+      }
+
+      ul,
+      ol {
+        margin: .45rem 0 .7rem;
+        padding-left: 1.25rem;
+      }
+
+      li {
+        margin: .18rem 0;
+      }
+
+      code {
+        color: #ffe2a6;
+        background: rgba(0,0,0,.28);
+        border: 1px solid rgba(192, 154, 75, .18);
+        border-radius: 4px;
+        padding: .08rem .28rem;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+
+      pre {
+        overflow: auto;
+        margin: .8rem 0;
+        padding: 1rem;
+        color: #f6e4bf;
+        background: #100c0a;
+        border: 1px solid rgba(192, 154, 75, .24);
+        border-radius: 7px;
+        line-height: 1.5;
+      }
+
+      pre code {
+        padding: 0;
+        border: 0;
+        background: transparent;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: .8rem 0;
+        overflow: hidden;
+        border: 1px solid var(--line);
+      }
+
+      th,
+      td {
+        vertical-align: top;
+        text-align: left;
+        padding: .7rem;
+        border-bottom: 1px solid rgba(192, 154, 75, .18);
+      }
+
+      th {
+        color: #f3d89f;
+        background: rgba(0,0,0,.26);
+      }
+
+      .lead {
+        max-width: 900px;
+        color: #dbc8a6;
+        font-size: 1.08rem;
+      }
+
+      .stamp {
+        display: inline-flex;
+        margin-bottom: 1rem;
+        padding: .22rem .65rem;
+        border: 1px solid rgba(244, 223, 173, .42);
+        border-radius: 999px;
+        color: #f7ddb0;
+        background: rgba(123, 43, 38, .44);
+        font-size: .85rem;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: .8rem;
+      }
+
+      .card {
+        padding: .8rem;
+        border: 1px solid rgba(192, 154, 75, .18);
+        border-radius: 7px;
+        background: rgba(0,0,0,.16);
+      }
+
+      .warning {
+        border-color: rgba(169, 75, 66, .52);
+        background: linear-gradient(180deg, rgba(123, 43, 38, .2), rgba(0,0,0,.12));
+      }
+
+      .parchment {
+        color: var(--paper-ink);
+        background:
+          radial-gradient(ellipse at 18% 14%, rgba(255, 247, 204, .58), transparent 26%),
+          radial-gradient(circle at 84% 20%, rgba(86, 40, 15, .18), transparent 18%),
+          linear-gradient(180deg, #f1dfad, #d1a66d);
+        border-color: rgba(84, 45, 19, .34);
+      }
+
+      .parchment h2,
+      .parchment h3 {
+        color: #21110c;
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      @media (max-width: 920px) {
+        main {
+          grid-template-columns: 1fr;
+        }
+
+        nav {
+          position: static;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="hero">
+      <span class="stamp">Documento de traspaso para otra IA</span>
+      <h1>Tablon de Anuncios Westmarch</h1>
+      <p class="lead">
+        Aplicacion web local para gestionar campanas de rol tipo westmarch con estetica medieval grimdark,
+        roles de Dungeon Master y jugador, anuncios diegeticos, personajes asignados por el DM y accion
+        de arrancar anuncios con notificacion interna.
+      </p>
+      <p class="muted">Fecha del traspaso: 26 de junio de 2026. Zona horaria de trabajo: Europe/Madrid.</p>
+    </header>
+
+    <main>
+      <nav aria-label="Indice">
+        <a href="#html-actual">HTML actual</a>
+        <a href="#objetivo">Objetivo del producto</a>
+        <a href="#estado">Estado actual</a>
+        <a href="#arranque">Arranque local</a>
+        <a href="#credenciales">Credenciales</a>
+        <a href="#archivos">Inventario de archivos</a>
+        <a href="#modelo">Modelo de datos</a>
+        <a href="#permisos">Roles y permisos</a>
+        <a href="#api">API</a>
+        <a href="#frontend">Frontend</a>
+        <a href="#cambios">Cambios ya hechos</a>
+        <a href="#decisiones">Decisiones clave</a>
+        <a href="#problemas">Problemas conocidos</a>
+        <a href="#siguientes">Siguientes pasos</a>
+        <a href="#checklist">Checklist de prueba</a>
+        <a href="#instrucciones-ia">Instrucciones para otra IA</a>
+      </nav>
+
+      <article>
+        <section id="html-actual" class="parchment">
+          <h2>HTML actual de la aplicacion</h2>
+          <p>
+            El HTML real de la app esta en <code>public/index.html</code>. Es deliberadamente minimo:
+            carga la hoja de estilos y el JavaScript que renderiza toda la interfaz.
+          </p>
+          <pre><code>&lt;!doctype html&gt;
+&lt;html lang="es"&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+    &lt;title&gt;Tablon de Anuncios Westmarch&lt;/title&gt;
+    &lt;link rel="stylesheet" href="/styles.css"&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div id="app"&gt;&lt;/div&gt;
+    &lt;script src="/app.js" defer&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <p>
+            Para continuar el trabajo visual o funcional, tocar principalmente <code>public/app.js</code>,
+            <code>public/styles.css</code>, <code>server.js</code> y <code>schema.sql</code>.
+          </p>
+        </section>
+
+        <section id="objetivo">
+          <h2>Objetivo del producto</h2>
+          <ol>
+            <li>El DM crea campanas.</li>
+            <li>El DM crea tablones dentro de cada campana.</li>
+            <li>El DM publica anuncios diegeticos con texto de PNJ.</li>
+            <li>El DM crea o vincula jugadores y les da una contrasena inicial.</li>
+            <li>El DM crea personajes dentro de cada jugador y los asigna a campanas.</li>
+            <li>El jugador entra, ve sus campanas autorizadas y elige personaje.</li>
+            <li>El jugador lee un anuncio y pulsa <strong>Arrancar anuncio</strong>.</li>
+            <li>El sistema registra jugador, personaje y fecha.</li>
+            <li>El anuncio pasa a <code>arrancado</code>.</li>
+            <li>El DM recibe una notificacion interna y puede revertir el arrancado.</li>
+          </ol>
+          <p>
+            La prioridad es mantener funcional el flujo central: <strong>DM publica -> jugador lee ->
+            jugador arranca -> DM recibe aviso</strong>.
+          </p>
+        </section>
+
+        <section id="estado">
+          <h2>Estado actual del proyecto</h2>
+          <div class="grid">
+            <div class="card">
+              <h3>MVP funcional</h3>
+              <p>Login, roles, campanas, tablones, anuncios, jugadores, personajes, arrancado y avisos.</p>
+            </div>
+            <div class="card">
+              <h3>Persistencia</h3>
+              <p>SQLite local en <code>data/tablon.sqlite</code>. Esquema base en <code>schema.sql</code>.</p>
+            </div>
+            <div class="card">
+              <h3>Estetica</h3>
+              <p>Grimdark medieval: madera, pergamino, lacre, metal oscuro y colores terrosos.</p>
+            </div>
+            <div class="card">
+              <h3>Documentacion</h3>
+              <p>Existe <code>README.md</code>, <code>INFORME_PROYECTO.md</code> y este HTML.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="arranque">
+          <h2>Arranque local</h2>
+          <pre><code>node server.js</code></pre>
+          <p>URL local:</p>
+          <pre><code>http://127.0.0.1:4173/</code></pre>
+          <p>Variables opcionales:</p>
+          <ul>
+            <li><code>PORT</code>: puerto alternativo.</li>
+            <li><code>HOST</code>: host alternativo. Por defecto <code>127.0.0.1</code>.</li>
+          </ul>
+          <div class="card warning">
+            <h3>Nota para Codex Desktop</h3>
+            <p>
+              Si <code>node</code> no esta en el PATH, usar el runtime incluido:
+            </p>
+            <pre><code>/Users/javierelio/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node server.js</code></pre>
+            <p>
+              Si aparece <code>listen EPERM</code>, normalmente es el sandbox bloqueando el puerto.
+              Hay que pedir permiso escalado para levantar el servidor local.
+            </p>
+          </div>
+        </section>
+
+        <section id="credenciales">
+          <h2>Credenciales y datos de prueba</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Rol</th>
+                <th>Usuario</th>
+                <th>Contrasena</th>
+                <th>Notas</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>DM</td>
+                <td><code>dm</code></td>
+                <td><code>dm123</code></td>
+                <td>Cuenta de Dungeon Master.</td>
+              </tr>
+              <tr>
+                <td>Jugador</td>
+                <td><code>jugador</code></td>
+                <td><code>jugador123</code></td>
+                <td>Jugador de prueba restaurado.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            En la base local tambien existe el usuario <code>Elsa</code>, nombre visible <code>Piratilla</code>.
+          </p>
+        </section>
+
+        <section id="archivos">
+          <h2>Inventario de archivos</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Archivo</th>
+                <th>Funcion</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>server.js</code></td>
+                <td>Servidor HTTP, API REST, autenticacion, permisos, acceso SQLite y seed inicial.</td>
+              </tr>
+              <tr>
+                <td><code>schema.sql</code></td>
+                <td>Modelo relacional: usuarios, sesiones, campanas, tablones, anuncios, personajes, arrancados y notificaciones.</td>
+              </tr>
+              <tr>
+                <td><code>public/index.html</code></td>
+                <td>HTML base minimo. Carga <code>styles.css</code> y <code>app.js</code>.</td>
+              </tr>
+              <tr>
+                <td><code>public/app.js</code></td>
+                <td>Frontend completo en JavaScript vanilla: estado, render, formularios, acciones y llamadas API.</td>
+              </tr>
+              <tr>
+                <td><code>public/styles.css</code></td>
+                <td>Estetica grimdark/pergamino, layout responsive, tablones y estados visuales.</td>
+              </tr>
+              <tr>
+                <td><code>public/assets/*.svg</code></td>
+                <td>Clavo, sello de lacre y marca visual del tablon.</td>
+              </tr>
+              <tr>
+                <td><code>data/tablon.sqlite</code></td>
+                <td>Base de datos persistente local. No borrar sin permiso.</td>
+              </tr>
+              <tr>
+                <td><code>README.md</code></td>
+                <td>Resumen de uso y arranque.</td>
+              </tr>
+              <tr>
+                <td><code>INFORME_PROYECTO.md</code></td>
+                <td>Informe exhaustivo en Markdown creado para traspaso.</td>
+              </tr>
+              <tr>
+                <td><code>TRASPASO_IA.html</code></td>
+                <td>Este documento HTML autocontenido.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="modelo">
+          <h2>Modelo de datos</h2>
+          <p>Tablas actuales declaradas en <code>schema.sql</code>:</p>
+          <ul>
+            <li><code>users</code>: usuarios con rol <code>dm</code> o <code>player</code>.</li>
+            <li><code>sessions</code>: sesiones por token.</li>
+            <li><code>campaigns</code>: campanas propiedad de un DM.</li>
+            <li><code>campaign_players</code>: jugadores autorizados en campanas, con <code>dm_notes</code>.</li>
+            <li><code>boards</code>: tablones dentro de campanas.</li>
+            <li><code>characters</code>: personajes de jugadores en campanas, con notas visibles y notas DM.</li>
+            <li><code>announcements</code>: anuncios publicos con bloque privado del DM.</li>
+            <li><code>pull_records</code>: registros de anuncios arrancados.</li>
+            <li><code>notifications</code>: avisos internos del DM.</li>
+          </ul>
+          <h3>Relaciones esenciales</h3>
+          <ul>
+            <li>Un DM tiene muchas campanas.</li>
+            <li>Una campana tiene muchos tablones.</li>
+            <li>Un tablon tiene muchos anuncios.</li>
+            <li>Una campana tiene muchos jugadores vinculados.</li>
+            <li>Un jugador puede tener varios personajes en una campana.</li>
+            <li>Un anuncio puede tener un unico arrancado activo.</li>
+            <li>Un arrancado activo referencia anuncio, campana, tablon, jugador y personaje.</li>
+          </ul>
+          <h3>Campos privados importantes</h3>
+          <ul>
+            <li><code>announcements.real_summary</code></li>
+            <li><code>announcements.narrative_hook</code></li>
+            <li><code>announcements.secret_information</code></li>
+            <li><code>announcements.involved_npcs</code></li>
+            <li><code>announcements.relevant_locations</code></li>
+            <li><code>announcements.possible_complications</code></li>
+            <li><code>announcements.real_reward</code></li>
+            <li><code>announcements.ignored_consequences</code></li>
+            <li><code>announcements.dm_notes</code></li>
+            <li><code>campaign_players.dm_notes</code></li>
+            <li><code>characters.dm_notes</code></li>
+          </ul>
+          <div class="card warning">
+            <h3>Columnas legacy</h3>
+            <p>
+              La base local puede conservar columnas antiguas en <code>announcements</code>:
+              <code>fictional_author</code>, <code>related_place</code>, <code>visible_reward</code>,
+              <code>danger_level</code>. El codigo actual ya no las usa.
+            </p>
+          </div>
+        </section>
+
+        <section id="permisos">
+          <h2>Roles y permisos</h2>
+          <h3>DM</h3>
+          <ul>
+            <li>Puede crear, editar y eliminar sus campanas.</li>
+            <li>Puede crear, editar y eliminar tablones.</li>
+            <li>Puede crear, editar, archivar y eliminar anuncios.</li>
+            <li>Ve todos los campos privados del DM.</li>
+            <li>Crea o vincula jugadores y gestiona sus notas privadas.</li>
+            <li>Crea, edita, elimina y asigna personajes a campanas.</li>
+            <li>Ve y marca notificaciones.</li>
+            <li>Puede revertir anuncios arrancados.</li>
+          </ul>
+          <h3>Jugador</h3>
+          <ul>
+            <li>Solo ve campanas donde esta vinculado.</li>
+            <li>Solo ve anuncios no archivados y no ocultos.</li>
+            <li>Solo ve campos publicos.</li>
+            <li>Solo ve sus propios personajes asignados por el DM.</li>
+            <li>Puede arrancar un anuncio disponible con uno de sus personajes.</li>
+            <li>No puede crear cuentas, personajes, campanas, tablones ni anuncios.</li>
+            <li>No puede ver notas privadas del DM.</li>
+          </ul>
+        </section>
+
+        <section id="api">
+          <h2>API actual</h2>
+          <p>Autenticacion por cabecera <code>Authorization: Bearer &lt;token&gt;</code>.</p>
+          <div class="grid">
+            <div class="card">
+              <h3>Auth</h3>
+              <ul>
+                <li><code>POST /api/login</code></li>
+                <li><code>POST /api/register</code> bloqueado</li>
+                <li><code>GET /api/me</code></li>
+                <li><code>POST /api/logout</code></li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Campanas</h3>
+              <ul>
+                <li><code>GET /api/campaigns</code></li>
+                <li><code>POST /api/campaigns</code></li>
+                <li><code>GET /api/campaigns/:id</code></li>
+                <li><code>PUT /api/campaigns/:id</code></li>
+                <li><code>DELETE /api/campaigns/:id</code></li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Tablones</h3>
+              <ul>
+                <li><code>GET /api/campaigns/:id/boards</code></li>
+                <li><code>POST /api/campaigns/:id/boards</code></li>
+                <li><code>PUT /api/boards/:id</code></li>
+                <li><code>DELETE /api/boards/:id</code></li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Anuncios</h3>
+              <ul>
+                <li><code>GET /api/boards/:id/announcements</code></li>
+                <li><code>POST /api/boards/:id/announcements</code></li>
+                <li><code>GET /api/announcements/:id</code></li>
+                <li><code>PUT /api/announcements/:id</code></li>
+                <li><code>DELETE /api/announcements/:id</code></li>
+                <li><code>POST /api/announcements/:id/status</code></li>
+                <li><code>POST /api/announcements/:id/pull</code></li>
+                <li><code>POST /api/announcements/:id/revert</code></li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Personajes</h3>
+              <ul>
+                <li><code>GET /api/campaigns/:id/characters</code></li>
+                <li><code>POST /api/campaigns/:id/characters</code></li>
+                <li><code>PUT /api/characters/:id</code></li>
+                <li><code>DELETE /api/characters/:id</code></li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Jugadores y avisos</h3>
+              <ul>
+                <li><code>GET /api/campaigns/:id/players</code></li>
+                <li><code>POST /api/campaigns/:id/players</code></li>
+                <li><code>DELETE /api/campaigns/:campaignId/players/:playerId</code></li>
+                <li><code>GET /api/notifications</code></li>
+                <li><code>POST /api/notifications/:id/read</code></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="frontend">
+          <h2>Frontend</h2>
+          <p>
+            <code>public/app.js</code> mantiene un objeto <code>state</code> global, renderiza HTML con
+            funciones y usa <code>fetch</code> contra la API.
+          </p>
+          <h3>Vistas DM</h3>
+          <ul>
+            <li>Dashboard</li>
+            <li>Campanas</li>
+            <li>Campana concreta</li>
+            <li>Tablones</li>
+            <li>Jugadores</li>
+            <li>Avisos</li>
+          </ul>
+          <h3>Vistas jugador</h3>
+          <ul>
+            <li>Dashboard</li>
+            <li>Campanas</li>
+            <li>Tablones</li>
+            <li>Personajes</li>
+            <li>Mis encargos</li>
+          </ul>
+          <h3>LocalStorage</h3>
+          <ul>
+            <li><code>tablon.token</code></li>
+            <li><code>tablon.campaign</code></li>
+            <li><code>tablon.board</code></li>
+            <li><code>tablon.activeCharacters</code></li>
+          </ul>
+        </section>
+
+        <section id="cambios">
+          <h2>Cambios ya hechos por peticion del usuario</h2>
+          <ul>
+            <li>Construido MVP con login, roles, campanas, tablones, anuncios, personajes, arrancado y notificaciones.</li>
+            <li>Bloqueado el registro publico. El DM crea o vincula jugadores.</li>
+            <li>El DM crea y elimina personajes; los jugadores solo los usan.</li>
+            <li>El creador de personajes paso a ser gestion de jugadores con multiples personajes dentro.</li>
+            <li>Se anadio eliminacion de jugadores de una campana.</li>
+            <li>Se arreglo el bug de "usuario ya existe" al crear/vincular jugadores.</li>
+            <li>Se anadieron notas privadas del DM para jugadores y personajes.</li>
+            <li>Se permitio asignar personajes a campanas.</li>
+            <li>Se restauro el jugador de prueba <code>jugador</code> y sus personajes.</li>
+            <li>Se eliminaron firma, lugar, recompensa visible y peligro como campos separados.</li>
+            <li>Los campos publicos vacios no se muestran a jugadores.</li>
+            <li>Se redisenaron los carteles para parecer pergaminos medievales.</li>
+            <li>Se incorporaron fuentes de aspecto manuscrito medieval.</li>
+          </ul>
+        </section>
+
+        <section id="decisiones">
+          <h2>Decisiones clave que no se deben romper</h2>
+          <ul>
+            <li>Los jugadores no se registran solos.</li>
+            <li>El DM crea usuarios de jugador y les pasa la contrasena inicial fuera de la app.</li>
+            <li>Los jugadores no crean personajes.</li>
+            <li>Los personajes pertenecen a un jugador y a una campana.</li>
+            <li>Firma, lugar, recompensa visible y peligro van dentro del texto diegetico si hacen falta.</li>
+            <li>Las notas privadas del DM nunca deben enviarse a jugadores.</li>
+            <li>El flujo de arrancar anuncio debe crear <code>pull_records</code> y notificacion.</li>
+            <li>Un anuncio solo puede tener un arrancado activo.</li>
+          </ul>
+        </section>
+
+        <section id="problemas">
+          <h2>Problemas conocidos y advertencias</h2>
+          <div class="grid">
+            <div class="card warning">
+              <h3>Columnas antiguas</h3>
+              <p>La base local conserva columnas antiguas que ya no se usan. No reintroducirlas sin peticion expresa.</p>
+            </div>
+            <div class="card warning">
+              <h3>Estado arrancado manual</h3>
+              <p>El DM puede poner estado <code>arrancado</code> manualmente sin crear <code>pull_record</code>. Mejorar en futuro.</p>
+            </div>
+            <div class="card warning">
+              <h3>Sin tests</h3>
+              <p>No hay suite automatizada. Toda verificacion actual ha sido manual o por inspeccion.</p>
+            </div>
+            <div class="card warning">
+              <h3>Servidor local</h3>
+              <p>Entre sesiones puede estar apagado. Si la preview falla, levantar de nuevo <code>server.js</code>.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="siguientes">
+          <h2>Siguientes pasos recomendados</h2>
+          <ol>
+            <li>Anadir tests de API para login, permisos, crear jugador, crear personaje, arrancar y notificar.</li>
+            <li>Crear migraciones versionadas para SQLite.</li>
+            <li>Limpiar columnas legacy de una forma segura.</li>
+            <li>Crear cambio/reset de contrasena gestionado por DM.</li>
+            <li>Distinguir "desvincular jugador de campana" de "borrar usuario global".</li>
+            <li>Evitar estado <code>arrancado</code> sin registro activo.</li>
+            <li>Implementar historial de misiones completadas.</li>
+            <li>Anadir calendario del mundo o reputacion de facciones solo despues de estabilizar el MVP.</li>
+          </ol>
+        </section>
+
+        <section id="checklist">
+          <h2>Checklist de prueba manual</h2>
+          <h3>Como DM</h3>
+          <ol>
+            <li>Entrar con <code>dm</code> / <code>dm123</code>.</li>
+            <li>Crear o abrir campana.</li>
+            <li>Crear tablon.</li>
+            <li>Crear o vincular jugador.</li>
+            <li>Anadir notas DM al jugador.</li>
+            <li>Crear personaje dentro del jugador.</li>
+            <li>Crear anuncio con texto publico y campos privados.</li>
+            <li>Comprobar que el detalle muestra panel privado.</li>
+          </ol>
+          <h3>Como jugador</h3>
+          <ol>
+            <li>Entrar con el usuario jugador.</li>
+            <li>Comprobar que solo ve campanas vinculadas.</li>
+            <li>Comprobar que ve sus personajes.</li>
+            <li>Abrir tablon y anuncio.</li>
+            <li>Comprobar que no ve campos privados.</li>
+            <li>Arrancar anuncio con personaje.</li>
+          </ol>
+          <h3>De nuevo como DM</h3>
+          <ol>
+            <li>Ver notificacion nueva.</li>
+            <li>Abrir anuncio.</li>
+            <li>Ver jugador y personaje que lo arrancaron.</li>
+            <li>Revertir arrancado.</li>
+            <li>Confirmar que vuelve a <code>disponible</code>.</li>
+          </ol>
+        </section>
+
+        <section id="instrucciones-ia">
+          <h2>Instrucciones para otra IA</h2>
+          <ol>
+            <li>Lee primero <code>INFORME_PROYECTO.md</code>; es el traspaso mas exhaustivo.</li>
+            <li>Despues lee <code>schema.sql</code>, <code>server.js</code>, <code>public/app.js</code> y <code>public/styles.css</code>.</li>
+            <li>No borres <code>data/tablon.sqlite</code> sin permiso del usuario.</li>
+            <li>No cambies la regla de que el DM crea jugadores y personajes salvo peticion expresa.</li>
+            <li>No expongas <code>dm_notes</code> ni campos privados de anuncios a jugadores.</li>
+            <li>Si modificas datos privados, revisa DTOs y endpoints, no solo la interfaz.</li>
+            <li>Si anades campos, actualiza esquema, servidor, frontend y documentacion.</li>
+            <li>Si cambias UI, manten la estetica grimdark, legible y de pergamino medieval.</li>
+            <li>Si la preview falla, levanta el servidor y abre una pestana nueva a <code>http://127.0.0.1:4173/</code>.</li>
+          </ol>
+          <p>
+            Documento Markdown complementario:
+            <code>INFORME_PROYECTO.md</code>. Este HTML es una guia de traspaso rapida y autocontenida,
+            pero el Markdown incluye mas detalle historico.
+          </p>
+        </section>
+      </article>
+    </main>
+  </body>
+</html>

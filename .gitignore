@@ -1,0 +1,24 @@
+# Base de datos (datos locales, no van al repo)
+*.sqlite
+*.sqlite-journal
+*.sqlite-shm
+*.sqlite-wal
+data/
+
+# Node
+node_modules/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+
+# Variables de entorno (si se usan en el futuro)
+.env
+.env.local
+
+# Editores
+.vscode/
+.idea/
