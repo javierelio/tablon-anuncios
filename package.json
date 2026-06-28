@@ -2,7 +2,7 @@
   "name": "tablon-westmarch",
   "version": "1.0.0",
   "description": "Tablón de anuncios estilo Witcher para campañas Westmarch",
-  "main": "server.js",
+  "main": "api/index.js",
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js"

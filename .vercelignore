@@ -1,6 +1,3 @@
-server.js
-app.js
-schema.sql
-arrancar.command
 data/
 *.sqlite
+arrancar.command
