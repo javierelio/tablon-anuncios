@@ -332,7 +332,8 @@ async function init() {
         const { notifications } = await api('/api/notifications');
         state.notifications = notifications;
       }
-      render();
+      // No re-renderizar si hay modal abierto (evita borrar texto en formularios)
+      if (!state.modal) render();
     } catch { /* silencioso — la sesión puede haber expirado */ }
   }, 45000);
 }
@@ -1095,6 +1096,23 @@ function renderDmPlayersView() {
             <h3>${escapeHtml(player.displayName)}</h3>
             <p>@${escapeHtml(player.username)}</p>
             ${player.dmNotes ? `<p class="muted"><strong>Notas DM:</strong> ${escapeHtml(shortText(player.dmNotes, 180))}</p>` : ''}
+            ${player.dmPasswordHint ? `
+              <div class="credentials-block" style="margin:.4rem 0">
+                <div class="credentials-header">
+                  <span class="credentials-label">📋 Acceso del jugador</span>
+                  <button class="metal-button" type="button"
+                    data-action="copy-credentials"
+                    data-text="${escapeHtml(`Usuario: ${player.username}\nContraseña: ${player.dmPasswordHint}\n${window.location.origin}`)}">
+                    Copiar
+                  </button>
+                </div>
+                <div class="credentials-preview">
+                  <code>Usuario: ${escapeHtml(player.username)}</code>
+                  <code>Contraseña: ${'•'.repeat(Math.min(player.dmPasswordHint.length, 12))}</code>
+                  <code>${window.location.origin}</code>
+                </div>
+              </div>
+            ` : ''}
             <div class="actions">
               <button class="metal-button primary" type="button" data-action="add-character-to-player" data-username="${escapeHtml(player.username)}">Crear personaje</button>
               <button class="metal-button" type="button" data-action="manage-player-characters" data-id="${player.id}" data-name="${escapeHtml(player.displayName)}">Gestionar personajes</button>
